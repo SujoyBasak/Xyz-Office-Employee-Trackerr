@@ -27,7 +27,9 @@ namespace XyzOfficeEmployeeTrackerr
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
             services.AddControllers();
+            services.AddSwaggerGen();
             services.AddDbContext<EmployeeContext>(options => options.UseSqlServer(Configuration.GetConnectionString("conStr")));
         }
 
@@ -38,7 +40,11 @@ namespace XyzOfficeEmployeeTrackerr
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Xyz Office");
+            });
             app.UseHttpsRedirection();
 
             app.UseRouting();
