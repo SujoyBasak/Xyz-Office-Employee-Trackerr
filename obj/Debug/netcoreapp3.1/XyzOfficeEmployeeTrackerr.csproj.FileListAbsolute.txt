@@ -61,6 +61,9 @@ C:\Users\Sujoy Basak\source\repos\XyzOfficeEmployeeTrackerr\bin\Debug\netcoreapp
 C:\Users\Sujoy Basak\source\repos\XyzOfficeEmployeeTrackerr\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.Swagger.dll
 C:\Users\Sujoy Basak\source\repos\XyzOfficeEmployeeTrackerr\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerGen.dll
 C:\Users\Sujoy Basak\source\repos\XyzOfficeEmployeeTrackerr\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\Sujoy Basak\source\repos\XyzOfficeEmployeeTrackerr\bin\Debug\netcoreapp3.1\log4net.config
+C:\Users\Sujoy Basak\source\repos\XyzOfficeEmployeeTrackerr\bin\Debug\netcoreapp3.1\log4net.dll
+C:\Users\Sujoy Basak\source\repos\XyzOfficeEmployeeTrackerr\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Logging.Log4Net.AspNetCore.dll
 C:\Users\Sujoy Basak\source\repos\XyzOfficeEmployeeTrackerr\obj\Debug\netcoreapp3.1\XyzOfficeEmployeeTrackerr.csproj.CoreCompileInputs.cache
 C:\Users\Sujoy Basak\source\repos\XyzOfficeEmployeeTrackerr\obj\Debug\netcoreapp3.1\XyzOfficeEmployeeTrackerr.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\Sujoy Basak\source\repos\XyzOfficeEmployeeTrackerr\obj\Debug\netcoreapp3.1\XyzOfficeEmployeeTrackerr.MvcApplicationPartsAssemblyInfo.cache
