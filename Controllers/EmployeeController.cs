@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using XyzOfficeEmployeeTrackerr.Models;
+using XyzOfficeEmployeeTrackerr.Repository;
 
 namespace XyzOfficeEmployeeTrackerr.Controllers
 {
@@ -12,63 +13,114 @@ namespace XyzOfficeEmployeeTrackerr.Controllers
     [ApiController]
     public class EmployeeController : ControllerBase
     {
-        private readonly EmployeeContext con;
 
-        public EmployeeController(EmployeeContext _con)
+        readonly log4net.ILog _log4net;
+
+        iEmployeeRep db;
+
+        public EmployeeController(iEmployeeRep _db)
         {
-            con = _con;
-
+            db = _db;
+            _log4net = log4net.LogManager.GetLogger(typeof(EmployeeController));
         }
+
+
+
         // GET: api/Employee
         [HttpGet]
-        public IEnumerable<Employee> Get()
+        public IActionResult Get()
         {
-            return con.Employees.ToList();
+            _log4net.Info("EmployeeController GET ALL Action Method called");
+            try
+            {
+                var obj = db.GetDetails();
+                if (obj == null)
+                    return NotFound();
+                return Ok(obj);
+            }
+            catch(Exception)
+            {
+                return BadRequest();
+            }
         }
 
         // GET: api/Employee/5
         [HttpGet("{id}")]
-        public Employee Get(int id)
+        public IActionResult Get(int id)
         {
-            return con.Employees.Find(id);
+            try
+            {
+                var obj = db.GetDetail(id);
+                if (obj == null)
+                    return NotFound();
+                return Ok(obj);
+            }
+            catch(Exception)
+            {
+                return BadRequest();
+            }
         }
 
         // POST: api/Employee
         [HttpPost]
-        public string Post([FromBody] Employee obj)
+        public IActionResult Post([FromBody] Employee obj)
         {
-            con.Employees.Add(obj);
-            con.SaveChanges();
-            return "Record Added";
+            if(ModelState.IsValid)
+            {
+                try
+                {
+                    var res = db.AddDetail(obj);
+                    if (res != 0)
+                        return Ok(res);
+
+                    return NotFound();
+                }
+                catch(Exception)
+                {
+                    return BadRequest();
+                }
+            }
+            return BadRequest();
         }
 
         // PUT: api/Employee/5
         [HttpPut("{id}")]
-        public string Put(int id, [FromBody] Employee emp)
+        public IActionResult Put(int id, [FromBody] Employee emp)
         {
-            Employee obj = con.Employees.Find(id);
-            obj.Name = emp.Name;
-            obj.deptId = emp.deptId;
-            obj.deptName = emp.deptName;
-            obj.salary = emp.salary;
+            if(ModelState.IsValid)
+            {
+                try
+                {
+                    var res = db.UpdateDetail(id,emp);
+                    if (res != 0)
+                        return Ok(res);
 
-            con.SaveChanges();
 
-            return "Record Updated";
+                    return NotFound();
+                }
+                catch (Exception)
+                {
+                    return BadRequest();
+                }
+            }
+            return BadRequest();
         }
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public string Delete(int id)
-        {
-            Employee obj = con.Employees.Find(id);
-            if(obj!=null)
+        public IActionResult Delete(int id)
+        {            
+            try
             {
-                con.Employees.Remove(obj);
-                con.SaveChanges();
-                return "Record Deleted";
+                var res = db.Delete(id);
+                if (res != 0)
+                    return Ok(res);
+                return BadRequest();
             }
-            return "Not Found";
+            catch(Exception)
+            {
+                return BadRequest();
+            }
         }
     }
 }

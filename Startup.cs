@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using XyzOfficeEmployeeTrackerr.Models;
+using XyzOfficeEmployeeTrackerr.Repository;
 
 namespace XyzOfficeEmployeeTrackerr
 {
@@ -28,9 +29,12 @@ namespace XyzOfficeEmployeeTrackerr
         public void ConfigureServices(IServiceCollection services)
         {
 
+
             services.AddControllers();
             services.AddSwaggerGen();
             services.AddDbContext<EmployeeContext>(options => options.UseSqlServer(Configuration.GetConnectionString("conStr")));
+
+            services.AddScoped<iEmployeeRep, EmployeeRep>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
