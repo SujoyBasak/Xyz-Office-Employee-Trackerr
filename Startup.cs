@@ -35,6 +35,7 @@ namespace XyzOfficeEmployeeTrackerr
             services.AddDbContext<EmployeeContext>(options => options.UseSqlServer(Configuration.GetConnectionString("conStr")));
 
             services.AddScoped<iEmployeeRep, EmployeeRep>();
+            services.AddScoped<ISalaryRep, SalaryRep>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

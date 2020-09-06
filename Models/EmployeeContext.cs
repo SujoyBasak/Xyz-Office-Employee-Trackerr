@@ -12,8 +12,12 @@ namespace XyzOfficeEmployeeTrackerr.Models
         {
 
         }
+        public EmployeeContext()
+        {
 
-        public DbSet<Employee> Employees { get; set; }
-        public DbSet<SalaryDetail> SalaryDetails { get; set; }
+        }
+
+        public virtual DbSet<Employee> Employees { get; set; }
+        public virtual DbSet<SalaryDetail> SalaryDetails { get; set; }
     }
 }

@@ -46,16 +46,18 @@ namespace XyzOfficeEmployeeTrackerr.Controllers
 
         // GET: api/Employee/5
         [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        public IActionResult Get1(int id)
         {
             try
             {
-                var obj = db.GetDetail(id);
-                if (obj == null)
+                var data = db.GetDetail(id);
+                if (data == null)
+                {
                     return NotFound();
-                return Ok(obj);
+                }
+                return Ok(data);
             }
-            catch(Exception)
+            catch (Exception)
             {
                 return BadRequest();
             }
@@ -87,39 +89,48 @@ namespace XyzOfficeEmployeeTrackerr.Controllers
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] Employee emp)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 try
                 {
-                    var res = db.UpdateDetail(id,emp);
-                    if (res != 0)
-                        return Ok(res);
+                    var result = db.UpdateDetail(id, emp);
+                    if (result != 1)
+                        return NotFound();
 
-
-                    return NotFound();
+                    return Ok(result);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    if (ex.GetType().FullName ==
+                             "Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException")
+                    {
+                        return NotFound();
+                    }
+
                     return BadRequest();
                 }
             }
+
             return BadRequest();
         }
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
-        {            
+        {
             try
             {
-                var res = db.Delete(id);
-                if (res != 0)
-                    return Ok(res);
-                return BadRequest();
+                var result = db.Delete(id);
+                if (result == 0)
+                {
+                    return NotFound(result);
+                }
+                return Ok(result);
             }
-            catch(Exception)
+            catch (Exception)
             {
-                return BadRequest();
+
+                return BadRequest(id);
             }
         }
     }

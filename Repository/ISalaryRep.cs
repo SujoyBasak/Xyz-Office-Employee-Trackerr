@@ -6,12 +6,12 @@ using XyzOfficeEmployeeTrackerr.Models;
 
 namespace XyzOfficeEmployeeTrackerr.Repository
 {
-    public interface iEmployeeRep
+    public interface ISalaryRep
     {
-        public List<Employee> GetDetails();
-        public Employee GetDetail(int id);
-        public int AddDetail(Employee emp);
-        public int UpdateDetail(int id, Employee emp);
+        public List<SalaryDetail> GetDetails();
+        public SalaryDetail GetDetail(int id);
+        public int AddDetail(SalaryDetail obj);
+        public int UpdateDetail(int id, SalaryDetail obj);
         public int Delete(int id);
     }
 }

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using XyzOfficeEmployeeTrackerr.Models;
+using XyzOfficeEmployeeTrackerr.Repository;
 
 namespace XyzOfficeEmployeeTrackerr.Controllers
 {
@@ -12,65 +13,118 @@ namespace XyzOfficeEmployeeTrackerr.Controllers
     [ApiController]
     public class SalaryDetailController : ControllerBase
     {
-        private readonly EmployeeContext con;
-        public SalaryDetailController(EmployeeContext _con)
+        readonly log4net.ILog _log4net;
+
+        ISalaryRep db;
+
+        public SalaryDetailController(ISalaryRep _db)
         {
-            con = _con;
+            db = _db;
+            _log4net = log4net.LogManager.GetLogger(typeof(EmployeeController));
         }
+
         // GET: api/SalaryDetail
         [HttpGet]
-        public IEnumerable<SalaryDetail> Get()
+        public IActionResult Get()
         {
-            return con.SalaryDetails.ToList();
+            _log4net.Info("SalaryDetailController GET ALL Action Method called");
+            try
+            {
+                var obj = db.GetDetails();
+                if (obj == null)
+                    return NotFound();
+                return Ok(obj);
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+            
         }
 
         // GET: api/SalaryDetail/5
         [HttpGet("{id}")]
-        public IEnumerable<SalaryDetail> Get(int id)
+        public IActionResult Get(int id)
         {
-            return con.SalaryDetails.Where(p => p.empId == id).ToList();        
+            try
+            {
+                var obj = db.GetDetail(id);
+                if (obj == null)
+                    return NotFound();
+                return Ok(obj);
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
         }
 
         // POST: api/SalaryDetail
         [HttpPost]
-        public string Post([FromBody] SalaryDetail obj)
+        public IActionResult Post([FromBody] SalaryDetail obj)
         {
-            con.SalaryDetails.Add(obj);
-            con.SaveChanges();
-            return "Record Added";
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var res = db.AddDetail(obj);
+                    if (res != 0)
+                        return Ok(res);
+
+                    return NotFound();
+                }
+                catch (Exception)
+                {
+                    return BadRequest();
+                }
+            }
+            return BadRequest();
         }
 
         // PUT: api/SalaryDetail/5
         [HttpPut("{id}")]
-        public string Put(int id, [FromBody] SalaryDetail sal)
+        public IActionResult Put(int id, [FromBody] SalaryDetail obj)
         {
-            SalaryDetail obj = con.SalaryDetails.Find(id);
-            if(obj!=null)
+            if (ModelState.IsValid)
             {
-                obj.empId = sal.empId;
-                obj.date = sal.date;
-                obj.salary = sal.salary;
-                con.SaveChanges();
-                return "Record Updated";
+                try
+                {
+                    var result = db.UpdateDetail(id,obj);
+                    if (result != 1)
+                        return NotFound();
+
+                    return Ok(result);
+                }
+                catch (Exception ex)
+                {
+                    if (ex.GetType().FullName ==
+                             "Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException")
+                    {
+                        return NotFound();
+                    }
+
+                    return BadRequest();
+                }
             }
 
-            return "Record Not Found";
+            return BadRequest();
         }
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public string Delete(int id)
+        public IActionResult Delete(int id)
         {
-            SalaryDetail obj = con.SalaryDetails.Find(id);
-            if(obj!=null)
+            try
             {
-                con.SalaryDetails.Remove(obj);
-                con.SaveChanges();
-                return "Record Deleted";
+                var res = db.Delete(id);
+                if (res != 0)
+                    return Ok(res);
+                return BadRequest();
             }
-
-            return "Record Not Found";
-
+            catch (Exception)
+            {
+                return BadRequest();
+            }
         }
     }
 }

@@ -21,7 +21,11 @@ namespace XyzOfficeEmployeeTrackerr.Repository
 
         public Employee GetDetail(int id)
         {
-            return db.Employees.Find(id);
+            if (db != null)
+            {
+                return (db.Employees.Where(x => x.empId == id)).FirstOrDefault();
+            }
+            return null;
         }
 
         public int AddDetail(Employee emp)
@@ -32,30 +36,47 @@ namespace XyzOfficeEmployeeTrackerr.Repository
             return emp.empId;
         }
 
+
+
         public int UpdateDetail(int id, Employee emp)
         {
-            var obj = db.Employees.Find(id);
-            if(obj!=null)
+            if(db!=null)
             {
-                obj.deptName = emp.deptName;
-                obj.Name = emp.Name;
-                obj.salary = emp.salary;
-                obj.deptId = emp.deptId;
-                db.SaveChanges();
-                return 1;
-            }
+                var obj = (db.Employees.Where(x => x.empId == id)).FirstOrDefault();
+                if (obj != null)
+                {
+                    obj.deptName = emp.deptName;
+                    obj.Name = emp.Name;
+                    obj.salary = emp.salary;
+                    obj.deptId = emp.deptId;
+                    db.SaveChanges();
+                    return 1;
+                }
+                return 0;
+            }            
             return 0;
         }
+
         public int Delete(int id)
         {
-            var obj = db.Employees.Find(id);
-            if(obj!=null)
+            int result = 0;
+
+            if (db != null)
             {
-                db.Employees.Remove(obj);
-                db.SaveChanges();
-                return 1;
+
+                var post = db.Employees.FirstOrDefault(x => x.empId == id);
+
+                if (post != null)
+                {
+
+                    db.Employees.Remove(post);
+                    result = db.SaveChanges();
+                    return 1;
+                }
+                return result;
             }
-            return 0;            
+
+            return result;
 
         }
     }
