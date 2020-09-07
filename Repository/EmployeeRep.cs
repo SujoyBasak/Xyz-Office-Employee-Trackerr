@@ -9,6 +9,7 @@ namespace XyzOfficeEmployeeTrackerr.Repository
     public class EmployeeRep : iEmployeeRep
     {
         EmployeeContext db;
+
         public EmployeeRep(EmployeeContext _db)
         {
             db = _db;
@@ -17,6 +18,7 @@ namespace XyzOfficeEmployeeTrackerr.Repository
         public List<Employee> GetDetails()
         {
             return db.Employees.ToList();
+            
         }
 
         public Employee GetDetail(int id)

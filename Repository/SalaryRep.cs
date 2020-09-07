@@ -9,10 +9,13 @@ namespace XyzOfficeEmployeeTrackerr.Repository
     public class SalaryRep : ISalaryRep
     {
         private readonly EmployeeContext db;
+
         public SalaryRep(EmployeeContext _db)
         {
             db = _db;
         }
+
+
         public int AddDetail(SalaryDetail obj)
         {
             db.SalaryDetails.Add(obj);

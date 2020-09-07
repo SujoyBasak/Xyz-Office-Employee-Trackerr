@@ -48,18 +48,19 @@ namespace XyzOfficeEmployeeTrackerr.Controllers
         [HttpGet("{id}")]
         public IActionResult Get1(int id)
         {
+            Employee data=new Employee();
             try
             {
-                var data = db.GetDetail(id);
+                data = db.GetDetail(id);
                 if (data == null)
                 {
-                    return NotFound();
+                    return BadRequest(data);
                 }
                 return Ok(data);
             }
             catch (Exception)
             {
-                return BadRequest();
+                return BadRequest(data); 
             }
         }
 
